@@ -1,5 +1,5 @@
 var drawSphere = function(r,n){
-	var d = DOMAIN([[0,PI],[0,2*PI]])([n,2*n]);
+	var domain = DOMAIN([[0,PI],[0,2*PI]])([n,2*n]);
 
 	var mapping = function (p){
 		var alfa = p[0]-(PI/2);
@@ -11,7 +11,7 @@ var drawSphere = function(r,n){
 
 		return [x,y,z];
 	}
-	var mapped = MAP(mapping)(d);
+	var mapped = MAP(mapping)(domain);
 
 
 	DRAW(mapped);
