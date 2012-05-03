@@ -69,32 +69,49 @@ DRAW(splineCubic);
 
 // Exercise 7
 
+var drawSphere = function(r,n,X,Y,Z){
+       var domain = DOMAIN([[0,PI],[0,2*PI]])([n,2*n]);
+
+       var mapping = function (p){
+              var alfa = p[0]-(PI/2);
+              var beta = p[1];
+
+              var x = r*COS(alfa)*COS(beta);
+              var y = r*COS(alfa)*SIN(beta);
+              var z = r*SIN(alfa);
+
+              return [x,y,z];
+       }
+       var mapped = COLOR([0,0,1,0.5])(T([0,1])([X,Y])(MAP(mapping)(domain)));
+
+       DRAW(mapped);
+       
+       return mapped;
+}
+
+
+
+
 var domain = INTERVALS(1)(20);
 
-var controlPoints = [[-3,6],[-4,2],[-3,-1],[-1,1],[1.5,1.5],[3,4],[5,5],[7,2],[6,-2],[2,-3]];
+var controlPoints = [[-3,6],[-3,6],[-4,2],[-3,-1],[-1,1],[1.5,1.5],[3,4],[5,5],[7,2],[6,-2],[2,-3],[2,-3]];
 
 var splineCardinal = COLOR([1,0,0])(SPLINE(CUBIC_CARDINAL(domain))(controlPoints));
 
 var splineCubic = COLOR([0,1,0])(SPLINE(CUBIC_UBSPLINE(domain))(controlPoints));
 
-var points = [
-              [-4,7],[-4,5],[-2,5],[-2,7],
-              [-5,3],[-5,1],[-3,1],[-3,3],
-              [-4,0],[-4,-2],[-2,-2],[-2,0],
-              [-2,2],[-2,0],[0,0],[0,2],
-              [0.5,2.5],[0.5,0.5],[2.5,0.5],[2.5,2.5],
-              [2,5],[2,3],[4,3],[4,5],
-              [4,6],[4,4],[6,4],[6,6],
-              [6,3],[6,1],[8,1],[8,3],
-              [5,-1],[5,-3],[7,-3],[7,-1],
-              [1,-2],[1,-4],[3,-4],[3,-2]
-              ];
+for (var i = 0 in controlPoints){
 
-var cells = [[0,1,3],[1,2,3],[4,5,7],[5,6,7],[8,9,11],[9,10,11],[12,13,15],[13,14,15],[[16,17,19],[17,18,19]],[20,21,23],[21,22,23],[24,25,27],[28,29,30],[31,32,34],[32,33,34],[35,36,38],[36,37,38]];
+       var point = controlPoints[i];
 
-var simplicialComplex = SIMPLICIAL_COMPLEX(points)(cells);
+       var x = point[0];
 
-var curve = STRUCT([splineCardinal,splineCubic, simplicialComplex]);
+       var y = point[1];
+
+       drawSphere(0.1,10,x,y,0);
+};
+
+var curve = STRUCT([splineCardinal,splineCubic]);
 
 DRAW(curve);
 
