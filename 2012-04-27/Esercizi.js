@@ -115,7 +115,76 @@ var curve = STRUCT([splineCardinal,splineCubic]);
 
 DRAW(curve);
 
+// Exercise 8
+
+var drawSphere = function(r,n,X,Y,Z){
+       var domain = DOMAIN([[0,PI],[0,2*PI]])([n,2*n]);
+
+       var mapping = function (p){
+              var alfa = p[0]-(PI/2);
+              var beta = p[1];
+
+              var x = r*COS(alfa)*COS(beta);
+              var y = r*COS(alfa)*SIN(beta);
+              var z = r*SIN(alfa);
+
+              return [x,y,z];
+       }
+       var mapped = COLOR([0,0,1,0.5])(T([0,1])([X,Y])(MAP(mapping)(domain)));
+
+       DRAW(mapped);
+       
+       return mapped;
+}
+
+var drawsplineCardinal = function(controlPoints,d1,d2){
+
+var domain = INTERVALS(d1)(d2);       
+
+polyline = POLYLINE(controlPoints);
+
+var splineCardinal = COLOR([1,0,0])(SPLINE(CUBIC_CARDINAL(domain))(controlPoints));
+
+for (var i = 0 in controlPoints){
+
+       var point = controlPoints[i];
+
+       var x = point[0];
+
+       var y = point[1];
+
+       drawSphere(0.1,10,x,y,0);
+};
+
+var SP = STRUCT([polyline, splineCardinal]);
+
+DRAW(SP);
+
+}
 
 
 
+var drawsplineCubic = function(controlPoints,d1,d2){
 
+var domain = INTERVALS(d1)(d2);       
+
+polyline = POLYLINE(controlPoints);
+
+var splineCubic = COLOR([1,0,0])(SPLINE(CUBIC_UBSPLINE(domain))(controlPoints));
+
+for (var i = 0 in controlPoints){
+
+       var point = controlPoints[i];
+
+       var x = point[0];
+
+       var y = point[1];
+
+       drawSphere(0.1,10,x,y,0);
+};
+
+var SP = STRUCT([polyline, splineCubic]);
+
+DRAW(SP);
+
+}
